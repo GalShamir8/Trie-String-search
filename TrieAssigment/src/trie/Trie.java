@@ -18,14 +18,11 @@ public class Trie {
 	private void init(String word) throws Exception {
 		if(word == null || word.isEmpty())
 			throw wordException;
-		System.out.println("Start init " + word);
 
 		this.head = new Node(word.charAt(0));
-		System.out.println(word.charAt(0));
 		word = word.substring(1);
 		if(word.length() > 1) {
 			Node newNode = new Node(word.charAt(0));
-			System.out.println(word.charAt(0));
 
 			this.head.addNode(newNode);
 			addWord(newNode, word.substring(1));
@@ -62,7 +59,6 @@ public class Trie {
 		Node currentNode = node;
 		while(word.length() > 0) {
 			Node nextNode = new Node(word.charAt(0));
-			System.out.println(word.charAt(0));
 			currentNode.addNode(nextNode);
 			currentNode = nextNode;
 			word = word.substring(1);
@@ -107,7 +103,6 @@ public class Trie {
 	}
 
 	private boolean searchWord(Node node, String word) {
-		boolean isExist = false;
 		//breaking condition
 		if(word.length() == 1) {
 			return word.charAt(0) == node.val;
@@ -134,20 +129,23 @@ public class Trie {
 
 		Node currentNode = this.head;
 		Node branch = this.head;
+		char lastChar = ' ';
 		if(search(word)) {
 			word = word.substring(1);
-			while(word.length() > 1) {
+			while(word.length() > 0) {
 				for(Node n: currentNode.getNextNodes()) {
 					if(n.val == word.charAt(0)) {
-						if(currentNode.getNextNodes().size() > 1) 
+						if(currentNode.getNextNodes().size() > 1) { 
 							branch = currentNode;
+							lastChar = word.charAt(0);
+						}
 						currentNode = n;
 					}
 				}
 				word = word.substring(1);
 			}
 			for(Node n: branch.getNextNodes()) {
-				if(n.val == word.charAt(0))
+				if(n.val == lastChar)
 					return branch.getNextNodes().remove(n);
 			}
 		}
