@@ -34,7 +34,7 @@ public class Trie {
 
 
 	public void insert(String word) throws Exception {
-		if(word == null || head.val != word.charAt(0) || word.isEmpty())
+		if(!checkValid(word))
 			throw wordException;
 
 		boolean flag = false;
@@ -50,7 +50,7 @@ public class Trie {
 			if(!flag) {
 				Node newNode = new Node(word.charAt(0));
 				head.addNode(newNode);
-				addWord(newNode, word);
+				addWord(newNode, word.substring(1));
 			}
 		}
 	}
@@ -91,12 +91,12 @@ public class Trie {
 		if(!flag) {
 			Node newNode = new Node(word.charAt(0));
 			node.addNode(newNode);
-			addWord(newNode, word);
+			addWord(newNode, word.substring(1));
 		}
 	}
 
 	public boolean search(String word) throws Exception {
-		if(word == null || word.isEmpty() || head.val != word.charAt(0))
+		if(!checkValid(word))
 			throw wordException;
 
 		return searchWord(this.head, word);
@@ -124,7 +124,7 @@ public class Trie {
 	 * @throws Exception
 	 */
 	public boolean remove(String word) throws Exception {
-		if(word == null || word.isEmpty() || head.val != word.charAt(0))
+		if(!checkValid(word))
 			throw wordException;
 
 		Node currentNode = this.head;
@@ -150,6 +150,10 @@ public class Trie {
 			}
 		}
 		return false;
+	}
+	
+	public boolean checkValid(String word) {
+		return word != null && !word.isEmpty() && head.val == word.charAt(0);
 	}
 }
 
